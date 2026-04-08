@@ -87,7 +87,7 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
     lastProcessTime: 0,
   })
   
-  const EAR_THRESHOLD = 0.2 // 闭眼阈值
+  const EAR_THRESHOLD = 0.4 // 闭眼阈值 (原0.2，调整为0.4提高灵敏度)
   const EAR_CONSEC_FRAMES = 2 // 连续帧数确认眨眼
   const BLINK_WINDOW_MS = 60000 // 1分钟窗口计算频率
   const TARGET_FPS = 5 // 目标检测帧率

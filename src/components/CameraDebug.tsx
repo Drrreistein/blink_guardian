@@ -169,9 +169,9 @@ export function CameraDebug() {
           
           setEarValue(avgEAR)
           
-          const isClosed = avgEAR < 0.22
+          const isClosed = avgEAR < 0.4
           setStatus(isClosed ? `检测到闭眼! EAR=${avgEAR.toFixed(3)}` : `眼睛睁开. EAR=${avgEAR.toFixed(3)}`)
-          addLog(`左眼 EAR: ${leftEAR.toFixed(3)}, 右眼 EAR: ${rightEAR.toFixed(3)}, 平均: ${avgEAR.toFixed(3)}, ${isClosed ? '闭眼' : '睁眼'}`)
+          addLog(`左眼 EAR: ${leftEAR.toFixed(3)}, 右眼 EAR: ${rightEAR.toFixed(3)}, 平均: ${avgEAR.toFixed(3)}, ${isClosed ? '闭眼' : '睁眼'} (阈值=0.4)`)
         } else {
           setStatus('未检测到人脸')
           addLog('未检测到人脸')
@@ -280,8 +280,8 @@ export function CameraDebug() {
       }}>
         <strong>状态:</strong> {status}
         {earValue !== null && (
-          <span style={{ marginLeft: '24px', color: earValue < 0.22 ? '#fa0' : '#0a0' }}>
-            EAR 值: {earValue.toFixed(3)} ({earValue < 0.22 ? '闭眼' : '睁眼'})
+          <span style={{ marginLeft: '24px', color: earValue < 0.4 ? '#fa0' : '#0a0' }}>
+            EAR 值: {earValue.toFixed(3)} ({earValue < 0.4 ? '闭眼' : '睁眼'}) [阈值=0.4]
           </span>
         )}
         {error && <div style={{ marginTop: '8px', color: '#f66' }}>❌ {error}</div>}
