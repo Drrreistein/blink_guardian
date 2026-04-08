@@ -1,18 +1,17 @@
+/* Timer202020 - Nothing Design Style */
+
 .timer {
   position: fixed;
   bottom: 200px;
   right: 24px;
-  background: rgba(30, 41, 59, 0.9);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  background: var(--bg-surface, #111111);
+  border: 1px solid var(--border, #333333);
   padding: 16px;
-  color: #f8fafc;
-  font-family: system-ui, -apple-system, sans-serif;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  color: var(--text-primary, #e5e5e5);
+  font-family: var(--font-primary, 'Space Grotesk', sans-serif);
   z-index: 999;
   width: 200px;
-  transition: all 0.3s ease;
+  transition: all 200ms ease-out;
 }
 
 .timer.minimized {
@@ -22,7 +21,7 @@
 }
 
 .timer:hover {
-  border-color: rgba(14, 165, 233, 0.3);
+  border-color: var(--text-secondary, #999999);
 }
 
 .header {
@@ -30,96 +29,110 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle, #222222);
+  padding-bottom: 8px;
 }
 
 .title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #94a3b8;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-secondary, #999999);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .icon {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .controls {
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 
 .iconBtn {
   width: 22px;
   height: 22px;
-  border: none;
+  border: 1px solid var(--border, #333333);
   background: transparent;
-  color: #64748b;
+  color: var(--text-secondary, #999999);
   cursor: pointer;
-  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  transition: all 0.2s;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 11px;
+  transition: all 150ms ease-out;
 }
 
 .iconBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f8fafc;
+  background: var(--bg-elevated, #1a1a1a);
+  color: var(--text-primary, #e5e5e5);
+  border-color: var(--text-secondary, #999999);
 }
 
 .countdown {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .time {
-  font-size: 36px;
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 48px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: #0ea5e9;
+  color: var(--text-display, #ffffff);
   line-height: 1;
-  font-family: 'SF Mono', Monaco, monospace;
 }
 
 .time.warning {
-  color: #f59e0b;
-  animation: pulse 1s ease-in-out infinite;
+  color: var(--accent-amber, #f59e0b);
+  animation: segment-pulse 1s steps(1) infinite;
 }
 
 .time.rest {
-  color: #10b981;
+  color: var(--accent-green, #10b981);
 }
 
 .label {
-  font-size: 11px;
-  color: #64748b;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 9px;
+  color: var(--text-disabled, #666666);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   margin-top: 4px;
 }
 
+/* Segmented Progress Bar - Industrial Style */
 .progress {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+  height: auto;
+  background: transparent;
+}
+
+.segment {
+  flex: 1;
   height: 4px;
-  background: rgba(15, 23, 42, 0.5);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-bottom: 12px;
+  background: var(--border, #333333);
+  transition: background 150ms ease-out;
 }
 
-.progressBar {
-  height: 100%;
-  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
-  border-radius: 2px;
-  transition: width 1s linear;
+.segment.active {
+  background: var(--text-primary, #e5e5e5);
 }
 
-.progressBar.warning {
-  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+.segment.warning {
+  background: var(--accent-amber, #f59e0b);
 }
 
-.progressBar.rest {
-  background: linear-gradient(90deg, #10b981, #34d399);
+.segment.rest {
+  background: var(--accent-green, #10b981);
 }
 
 .actions {
@@ -130,31 +143,32 @@
 .btn {
   flex: 1;
   padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
+  border: 1px solid var(--border, #333333);
+  background: transparent;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #999999);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 150ms ease-out;
+}
+
+.btn:hover {
+  background: var(--bg-elevated, #1a1a1a);
+  color: var(--text-primary, #e5e5e5);
+  border-color: var(--text-secondary, #999999);
 }
 
 .btnPrimary {
-  background: #0ea5e9;
-  color: #fff;
+  border-color: var(--text-secondary, #999999);
+  color: var(--text-primary, #e5e5e5);
 }
 
 .btnPrimary:hover {
-  background: #0284c7;
-}
-
-.btnSecondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
-}
-
-.btnSecondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #f8fafc;
+  background: var(--text-primary, #e5e5e5);
+  color: var(--bg-primary, #000000);
 }
 
 .minimizedContent {
@@ -164,24 +178,27 @@
 }
 
 .minimizedIcon {
-  font-size: 16px;
+  font-size: 12px;
+  color: var(--text-secondary, #999999);
 }
 
 .minimizedTime {
-  font-size: 14px;
-  font-weight: 600;
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 18px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: #0ea5e9;
+  color: var(--text-display, #ffffff);
 }
 
 .minimizedTime.warning {
-  color: #f59e0b;
+  color: var(--accent-amber, #f59e0b);
 }
 
+/* Rest Overlay - Minimal Design */
 .restOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.95);
+  background: var(--bg-primary, #000000);
   z-index: 3000;
   display: flex;
   flex-direction: column;
@@ -189,7 +206,7 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: all 200ms ease-out;
 }
 
 .restOverlay.active {
@@ -197,37 +214,47 @@
   visibility: visible;
 }
 
-.restIcon {
-  font-size: 80px;
-  margin-bottom: 24px;
-  animation: breathe 3s ease-in-out infinite;
+.restCode {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 11px;
+  color: var(--accent-green, #10b981);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
 }
 
 .restTitle {
-  font-size: 28px;
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 48px;
   font-weight: 700;
-  color: #f8fafc;
-  margin-bottom: 12px;
+  color: var(--text-display, #ffffff);
+  margin-bottom: 8px;
+  line-height: 1;
 }
 
 .restSubtitle {
-  font-size: 16px;
-  color: #94a3b8;
+  font-family: var(--font-primary, 'Space Grotesk', sans-serif);
+  font-size: 14px;
+  color: var(--text-secondary, #999999);
   margin-bottom: 32px;
 }
 
 .restCountdown {
-  font-size: 64px;
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 96px;
   font-weight: 700;
-  color: #10b981;
+  color: var(--accent-green, #10b981);
   font-variant-numeric: tabular-nums;
-  font-family: 'SF Mono', Monaco, monospace;
+  line-height: 1;
+  margin-bottom: 48px;
 }
 
 .restHint {
-  font-size: 14px;
-  color: #64748b;
-  margin-top: 24px;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  color: var(--text-disabled, #666666);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .skipBtn {
@@ -235,25 +262,30 @@
   bottom: 48px;
   padding: 12px 24px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: #64748b;
-  font-size: 14px;
+  border: 1px solid var(--border, #333333);
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary, #999999);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 150ms ease-out;
 }
 
 .skipBtn:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  color: #94a3b8;
+  border-color: var(--text-secondary, #999999);
+  color: var(--text-primary, #e5e5e5);
 }
 
-@keyframes pulse {
+/* Animations - Percussive */
+@keyframes segment-pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.4; }
 }
 
-@keyframes breathe {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .time.warning {
+    animation: none;
+  }
 }
