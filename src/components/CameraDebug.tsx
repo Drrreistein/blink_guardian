@@ -61,23 +61,49 @@ export function CameraDebug() {
 
   // 拍照
   const takePhoto = useCallback(() => {
-    if (!videoRef.current || !canvasRef.current) return
+    if (!videoRef.current || !canvasRef.current) {
+      setError('Video 或 Canvas 元素未找到')
+      addLog('错误: Video/Canvas 未找到')
+      return
+    }
     
     const video = videoRef.current
+    addLog(`视频尺寸: ${video.videoWidth}x${video.videoHeight}, readyState: ${video.readyState}`)
+    
+    if (video.videoWidth === 0) {
+      setError('视频尚未加载完成，请稍后重试')
+      addLog('错误: 视频宽度为0')
+      return
+    }
+    
     const canvas = canvasRef.current
     
-    canvas.width = video.videoWidth || 320
-    canvas.height = video.videoHeight || 240
+    // 使用实际视频尺寸
+    const width = Math.max(1, video.videoWidth)
+    const height = Math.max(1, video.videoHeight)
+    
+    canvas.width = width
+    canvas.height = height
     
     const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    if (!ctx) {
+      setError('无法获取 Canvas 上下文')
+      addLog('错误: 无法获取 Canvas context')
+      return
+    }
     
-    ctx.drawImage(video, 0, 0)
+    // 绘制视频帧到 canvas
+    ctx.drawImage(video, 0, 0, width, height)
     
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.8)
-    setPhotoDataUrl(dataUrl)
-    setStatus('已拍照 - 点击"分析"按钮检测人脸')
-    addLog(`拍照完成 (${video.videoWidth}x${video.videoHeight})`)
+    try {
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8)
+      setPhotoDataUrl(dataUrl)
+      setStatus(`已拍照 - 点击"分析"按钮检测人脸 (${width}x${height})`)
+      addLog(`拍照完成: ${width}x${height}`)
+    } catch (e) {
+      setError(`生成图片失败: ${String(e)}`)
+      addLog(`错误: toDataURL 失败 - ${String(e)}`)
+    }
   }, [])
 
   // 使用 MediaPipe 分析
@@ -261,6 +287,14 @@ export function CameraDebug() {
         {error && <div style={{ marginTop: '8px', color: '#f66' }}>❌ {error}</div>}
       </div>
 
+      {/* 隐藏的 Canvas 用于拍照 */}
+      <canvas 
+        ref={canvasRef} 
+        style={{ display: 'none' }}
+        width={320} 
+        height={240}
+      />
+      
       {/* 视频和照片 */}
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
         {/* 视频预览 */}
