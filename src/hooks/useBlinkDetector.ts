@@ -184,54 +184,73 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
     const init = async () => {
       const loaded = await waitForMediaPipe()
       if (!loaded) return
-    
-    const faceMesh = new window.FaceMesh({
-      locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
-      }
-    })
-    
-    faceMesh.setOptions({
-      maxNumFaces: 1,
-      refineLandmarks: false,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    })
-    
-    faceMesh.onResults(processResults)
-    faceMeshRef.current = faceMesh
-    
-    // 初始化相机
-    const video = videoRef.current
-    if (!video) return
-    
-    const camera = new window.Camera(video, {
-      onFrame: async () => {
-        await faceMesh.send({ image: video })
-      },
-      width: 320,
-      height: 240,
-    })
-    
-    cameraRef.current = camera
-    
-    // 启动相机
-    camera.start()
-      .then(() => {
-        setIsInitialized(true)
-        setError(null)
-      })
-      .catch((err) => {
+      
+      // 先请求摄像头权限（这会触发浏览器权限弹窗）
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: { ideal: 320 },
+            height: { ideal: 240 },
+            facingMode: 'user'
+          } 
+        })
+        // 将 stream 设置到 video 元素
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream
+        }
+      } catch (err) {
         const errorMsg = err instanceof Error ? err.message : '相机启动失败'
         if (errorMsg.includes('Permission denied') || errorMsg.includes('NotAllowedError')) {
-          setError('相机权限被拒绝。请点击浏览器地址栏的相机图标，选择"允许"。')
+          setError('相机权限被拒绝。请检查浏览器权限设置后刷新页面。')
         } else if (errorMsg.includes('NotFoundError') || errorMsg.includes('DevicesNotFoundError')) {
           setError('未找到摄像头设备。请确保摄像头已连接。')
         } else {
           setError(`${errorMsg}。请检查摄像头权限后刷新页面。`)
         }
         setIsInitialized(false)
+        return
+      }
+    
+      const faceMesh = new window.FaceMesh({
+        locateFile: (file) => {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+        }
       })
+      
+      faceMesh.setOptions({
+        maxNumFaces: 1,
+        refineLandmarks: false,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+      })
+      
+      faceMesh.onResults(processResults)
+      faceMeshRef.current = faceMesh
+      
+      // 初始化 MediaPipe Camera（使用已授权的 stream）
+      const video = videoRef.current
+      if (!video) return
+      
+      const camera = new window.Camera(video, {
+        onFrame: async () => {
+          await faceMesh.send({ image: video })
+        },
+        width: 320,
+        height: 240,
+      })
+      
+      cameraRef.current = camera
+      
+      // 启动相机
+      try {
+        await camera.start()
+        setIsInitialized(true)
+        setError(null)
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : '相机启动失败'
+        setError(`${errorMsg}。请刷新页面重试。`)
+        setIsInitialized(false)
+      }
     
     // 页面可见性变化处理
     const handleVisibilityChange = () => {
