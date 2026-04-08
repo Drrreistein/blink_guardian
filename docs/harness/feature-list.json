@@ -13,10 +13,10 @@
       "shortcut": false,
       "shortcut_reason": null,
       "evaluation": {
-        "evaluated_at": "2026-04-08T18:15:00",
+        "evaluated_at": "2026-04-08T18:30:00",
         "evaluator": "Evaluator Agent",
-        "score": 8.2,
-        "report_path": "docs/harness/evaluation-reports/feat-redesign-ui.md"
+        "score": 8.5,
+        "report_path": "docs/harness/evaluation-reports/feat-redesign-ui-v2.md"
       },
       "e2e_tests": [
         "页面加载显示 Nothing Design 风格界面",

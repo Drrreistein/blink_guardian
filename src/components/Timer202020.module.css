@@ -116,6 +116,26 @@
   background: transparent;
 }
 
+.progressBar {
+  flex: 1;
+  height: 4px;
+  background: var(--border, #333333);
+  transition: background 150ms ease-out;
+}
+
+.progressBar.active {
+  background: var(--text-primary, #e5e5e5);
+}
+
+.progressBar.warning {
+  background: var(--accent-amber, #f59e0b);
+}
+
+.progressBar.rest {
+  background: var(--accent-green, #10b981);
+}
+
+/* Keep .segment for backwards compatibility */
 .segment {
   flex: 1;
   height: 4px;
@@ -171,6 +191,17 @@
   color: var(--bg-primary, #000000);
 }
 
+.btnSecondary {
+  border-color: var(--border, #333333);
+  color: var(--text-secondary, #999999);
+}
+
+.btnSecondary:hover {
+  background: var(--bg-elevated, #1a1a1a);
+  color: var(--text-primary, #e5e5e5);
+  border-color: var(--text-secondary, #999999);
+}
+
 .minimizedContent {
   display: flex;
   align-items: center;
@@ -220,6 +251,11 @@
   color: var(--accent-green, #10b981);
   text-transform: uppercase;
   letter-spacing: 0.2em;
+  margin-bottom: 16px;
+}
+
+.restIcon {
+  font-size: 48px;
   margin-bottom: 16px;
 }
 
