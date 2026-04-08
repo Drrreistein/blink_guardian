@@ -1,4 +1,4 @@
-const CACHE_NAME = 'blink-guardian-v1'
+const CACHE_NAME = 'blink-guardian-v2-redesign'
 const STATIC_ASSETS = [
   '/',
   '/index.html',
