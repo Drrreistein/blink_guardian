@@ -1,0 +1,21 @@
+{
+  "name": "Blink Guardian - 眨眼监测",
+  "short_name": "Blink Guardian",
+  "description": "干眼症眨眼频率监测应用，使用摄像头监测眨眼频率，智能提醒保护眼睛",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

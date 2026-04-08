@@ -1,0 +1,291 @@
+/* Timer202020 - Nothing Design Style */
+
+.timer {
+  position: fixed;
+  bottom: 200px;
+  right: 24px;
+  background: var(--bg-surface, #111111);
+  border: 1px solid var(--border, #333333);
+  padding: 16px;
+  color: var(--text-primary, #e5e5e5);
+  font-family: var(--font-primary, 'Space Grotesk', sans-serif);
+  z-index: 999;
+  width: 200px;
+  transition: all 200ms ease-out;
+}
+
+.timer.minimized {
+  width: auto;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.timer:hover {
+  border-color: var(--text-secondary, #999999);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle, #222222);
+  padding-bottom: 8px;
+}
+
+.title {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-secondary, #999999);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  font-size: 12px;
+}
+
+.controls {
+  display: flex;
+  gap: 4px;
+}
+
+.iconBtn {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border, #333333);
+  background: transparent;
+  color: var(--text-secondary, #999999);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 11px;
+  transition: all 150ms ease-out;
+}
+
+.iconBtn:hover {
+  background: var(--bg-elevated, #1a1a1a);
+  color: var(--text-primary, #e5e5e5);
+  border-color: var(--text-secondary, #999999);
+}
+
+.countdown {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.time {
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 48px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-display, #ffffff);
+  line-height: 1;
+}
+
+.time.warning {
+  color: var(--accent-amber, #f59e0b);
+  animation: segment-pulse 1s steps(1) infinite;
+}
+
+.time.rest {
+  color: var(--accent-green, #10b981);
+}
+
+.label {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 9px;
+  color: var(--text-disabled, #666666);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+
+/* Segmented Progress Bar - Industrial Style */
+.progress {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+  height: auto;
+  background: transparent;
+}
+
+.segment {
+  flex: 1;
+  height: 4px;
+  background: var(--border, #333333);
+  transition: background 150ms ease-out;
+}
+
+.segment.active {
+  background: var(--text-primary, #e5e5e5);
+}
+
+.segment.warning {
+  background: var(--accent-amber, #f59e0b);
+}
+
+.segment.rest {
+  background: var(--accent-green, #10b981);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border, #333333);
+  background: transparent;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #999999);
+  cursor: pointer;
+  transition: all 150ms ease-out;
+}
+
+.btn:hover {
+  background: var(--bg-elevated, #1a1a1a);
+  color: var(--text-primary, #e5e5e5);
+  border-color: var(--text-secondary, #999999);
+}
+
+.btnPrimary {
+  border-color: var(--text-secondary, #999999);
+  color: var(--text-primary, #e5e5e5);
+}
+
+.btnPrimary:hover {
+  background: var(--text-primary, #e5e5e5);
+  color: var(--bg-primary, #000000);
+}
+
+.minimizedContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.minimizedIcon {
+  font-size: 12px;
+  color: var(--text-secondary, #999999);
+}
+
+.minimizedTime {
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-display, #ffffff);
+}
+
+.minimizedTime.warning {
+  color: var(--accent-amber, #f59e0b);
+}
+
+/* Rest Overlay - Minimal Design */
+.restOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary, #000000);
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 200ms ease-out;
+}
+
+.restOverlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.restCode {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 11px;
+  color: var(--accent-green, #10b981);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+}
+
+.restTitle {
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text-display, #ffffff);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.restSubtitle {
+  font-family: var(--font-primary, 'Space Grotesk', sans-serif);
+  font-size: 14px;
+  color: var(--text-secondary, #999999);
+  margin-bottom: 32px;
+}
+
+.restCountdown {
+  font-family: var(--font-display, 'Doto', monospace);
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--accent-green, #10b981);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin-bottom: 48px;
+}
+
+.restHint {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  color: var(--text-disabled, #666666);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.skipBtn {
+  position: absolute;
+  bottom: 48px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--border, #333333);
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary, #999999);
+  cursor: pointer;
+  transition: all 150ms ease-out;
+}
+
+.skipBtn:hover {
+  border-color: var(--text-secondary, #999999);
+  color: var(--text-primary, #e5e5e5);
+}
+
+/* Animations - Percussive */
+@keyframes segment-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .time.warning {
+    animation: none;
+  }
+}

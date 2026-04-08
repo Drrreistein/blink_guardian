@@ -1,0 +1,245 @@
+/* Monitor Widget - Nothing Design Industrial Style */
+
+.widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  transition: all var(--transition-base);
+  z-index: 1000;
+}
+
+/* Expanded State */
+.expanded {
+  width: 280px;
+}
+
+/* Minimized State - Dot Display */
+.minimized {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.minimized:hover {
+  background: var(--bg-elevated);
+  border-color: var(--text-secondary);
+}
+
+.minimizedRate {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-display);
+}
+
+/* Header - Clean & Technical */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.controls {
+  display: flex;
+  gap: 4px;
+}
+
+.iconBtn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  transition: all var(--transition-fast);
+}
+
+.iconBtn:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+/* Main Stat - Hero Number (Primary Layer) */
+.mainStat {
+  padding: 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.rateValue {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--text-display);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.rateUnit {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-left: 4px;
+}
+
+.rateLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-disabled);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+
+/* Segmented Progress Bar - Industrial Style */
+.segmentedBar {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 0 16px;
+}
+
+.segment {
+  width: 8px;
+  height: 4px;
+  background: var(--border);
+  transition: background var(--transition-fast);
+}
+
+.segment.active {
+  background: var(--text-primary);
+}
+
+.segment.warning {
+  background: var(--accent-amber);
+}
+
+.segment.danger {
+  background: var(--accent-red);
+}
+
+/* Status Indicator - Dot Matrix Style */
+.statusIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.statusNormal {
+  color: var(--accent-green);
+}
+
+.statusWarning {
+  color: var(--accent-amber);
+}
+
+.statusDanger {
+  color: var(--accent-red);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+}
+
+.statusDanger .dot {
+  animation: segment-blink 0.5s steps(1) infinite;
+}
+
+/* Stats Grid - Technical Layout */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.statItem {
+  text-align: center;
+  padding: 16px 12px;
+  border-right: 1px solid var(--border);
+}
+
+.statItem:last-child {
+  border-right: none;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-display);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-disabled);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+
+/* Video Preview */
+.videoPreview {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border);
+}
+
+.videoHidden {
+  display: none;
+}
+
+/* State Colors */
+.normal { color: var(--accent-green); }
+.warning { color: var(--accent-amber); }
+.danger { color: var(--accent-red); }
+
+/* Animations */
+@keyframes segment-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .statusDanger .dot {
+    animation: none;
+  }
+}

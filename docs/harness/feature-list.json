@@ -1,0 +1,59 @@
+{
+  "version": "2.0",
+  "project": "Blink Guardian",
+  "description": "眼动追踪眨眼监测应用 - Nothing Design 风格重设计",
+  "features": [
+    {
+      "id": "feat-redesign-ui",
+      "title": "UI 重设计 - Nothing Design 风格",
+      "description": "使用 Nothing Design System 重新设计整个应用界面，采用单色、工业风格、瑞士字体排版",
+      "priority": "P0",
+      "status": "evaluated",
+      "passes": true,
+      "shortcut": false,
+      "shortcut_reason": null,
+      "evaluation": {
+        "evaluated_at": "2026-04-08T18:15:00",
+        "evaluator": "Evaluator Agent",
+        "score": 8.2,
+        "report_path": "docs/harness/evaluation-reports/feat-redesign-ui.md"
+      },
+      "e2e_tests": [
+        "页面加载显示 Nothing Design 风格界面",
+        "使用 Space Grotesk + Space Mono 字体",
+        "单色配色方案（黑白灰为主）",
+        "三层视觉层次清晰（Primary/Secondary/Tertiary）",
+        "监控面板采用工业仪表风格",
+        "呼吸灯提醒改为点阵/分段式进度条",
+        "响应式布局正常"
+      ],
+      "files_to_modify": [
+        "src/App.tsx",
+        "src/App.css",
+        "src/components/MonitorWidget.tsx",
+        "src/components/AlertIndicator.tsx",
+        "index.html"
+      ],
+      "dependencies": []
+    }
+  ],
+  "technical_stack": {
+    "frontend": "React 18 + Vite + TypeScript + Tailwind",
+    "design_system": "Nothing Design System",
+    "fonts": "Space Grotesk + Space Mono + Doto (Google Fonts)",
+    "testing": "Playwright + Vitest"
+  },
+  "completion_status": {
+    "completed_features": 0,
+    "total_features": 1,
+    "completion_percentage": 0,
+    "shortcut_features": 0
+  },
+  "status_definitions": {
+    "pending": "初始状态，等待开发",
+    "in-progress": "已发布 Sprint Contract，正在开发",
+    "implemented": "代码实现完成，测试通过，等待验收",
+    "evaluated": "Evaluator 验收通过",
+    "done": "已合并到 main，打上 tag"
+  }
+}

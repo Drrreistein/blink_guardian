@@ -1,120 +1,117 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useState, useCallback } from 'react'
+import { MonitorWidget } from './components/MonitorWidget'
+import { SettingsPanel } from './components/SettingsPanel'
+import { AlertOverlay } from './components/AlertOverlay'
+import { AnalyticsPanel } from './components/AnalyticsPanel'
+import { Timer202020 } from './components/Timer202020'
+import { useAlert } from './hooks/useAlert'
+import { useSessionStorage } from './hooks/useSessionStorage'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false)
+  const [timerEnabled, setTimerEnabled] = useState(true)
+  
+  const { 
+    config, 
+    saveConfig, 
+    isAlerting, 
+    alertLevel, 
+    stopAlert,
+    requestNotificationPermission,
+  } = useAlert()
+  
+  const { sessions, currentSession, exportData, clearAll } = useSessionStorage()
+  
+  const handleOpenSettings = useCallback(() => {
+    setIsSettingsOpen(true)
+    if (config.notificationEnabled) {
+      void requestNotificationPermission()
+    }
+  }, [config.notificationEnabled, requestNotificationPermission])
+  
+  const handleSaveConfig = useCallback((newConfig: Parameters<typeof saveConfig>[0]) => {
+    saveConfig(newConfig)
+    if ('notificationEnabled' in newConfig && newConfig.notificationEnabled) {
+      void requestNotificationPermission()
+    }
+  }, [saveConfig, requestNotificationPermission])
+  
   return (
-    <>
-      <section id="center">
+    <div className="app">
+      {/* Main content */}
+      <main className="main">
         <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+          <h1 className="title">BLINK GUARDIAN</h1>
+          <p className="subtitle">Eye Health Monitor</p>
+          
+          <div className="features">
+            <div className="feature">Real-time Detection</div>
+            <div className="feature">Data Analytics</div>
+            <div className="feature">Smart Alerts</div>
+          </div>
+          
+          <div className="status">
+            <div className={`statusDot ${alertLevel}`} />
+            <span className="statusText">
+              {alertLevel === 'normal' ? 'System Active' : 
+               alertLevel === 'warning' ? 'Low Blink Rate' : 
+               'Critical Alert'}
+            </span>
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
+        
+        <div className="tips">
+          <h2>Eye Care Guidelines</h2>
           <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
+            <li>Normal blink rate is 15-20 times per minute</li>
+            <li>Computer use typically reduces blinking to 5-7 times per minute</li>
+            <li>Follow the 20-20-20 rule: Every 20 minutes, look 20 feet away for 20 seconds</li>
+            <li>Maintain 50-70cm distance from your screen</li>
+            <li>Use artificial tears to relieve dry eye symptoms</li>
           </ul>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      </main>
+      
+      {/* Monitor Widget */}
+      <MonitorWidget 
+        onOpenSettings={handleOpenSettings}
+        onOpenAnalytics={() => setIsAnalyticsOpen(true)}
+      />
+      
+      {/* 20-20-20 Timer */}
+      <Timer202020 enabled={timerEnabled} />
+      
+      {/* Settings Panel */}
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        alertConfig={config}
+        onSaveAlertConfig={handleSaveConfig}
+        sessions={sessions}
+        onExportData={exportData}
+        onClearAll={clearAll}
+        timerEnabled={timerEnabled}
+        onToggleTimer={() => setTimerEnabled(!timerEnabled)}
+      />
+      
+      {/* Analytics Panel */}
+      <AnalyticsPanel
+        isOpen={isAnalyticsOpen}
+        onClose={() => setIsAnalyticsOpen(false)}
+        sessions={sessions}
+        currentSession={currentSession}
+      />
+      
+      {/* Alert Overlay */}
+      <AlertOverlay
+        isActive={isAlerting}
+        level={alertLevel}
+        visualEnabled={config.visualEnabled}
+        onDismiss={stopAlert}
+      />
+    </div>
   )
 }
 
