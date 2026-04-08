@@ -57,6 +57,7 @@ export type BlinkData = {
   blinkRate: number // 每分钟眨眼次数
   lastBlinkTime: number | null
   eyeOpenness: number // 0-1，眼睛张开程度
+  rawEar: number      // 原始 EAR 值 (用于调试)
 }
 
 interface UseBlinkDetectorOptions {
@@ -77,6 +78,7 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
     blinkRate: 0,
     lastBlinkTime: null,
     eyeOpenness: 1,
+    rawEar: 0.5,
   })
   
   // 眨眼检测状态
@@ -85,12 +87,12 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
     isEyeClosed: false,
     blinkTimestamps: [] as number[],
     lastProcessTime: 0,
+    lastBlinkTime: 0,
   })
   
-  const EAR_THRESHOLD = 0.4 // 闭眼阈值 (原0.2，调整为0.4提高灵敏度)
-  const EAR_CONSEC_FRAMES = 2 // 连续帧数确认眨眼
-  const BLINK_WINDOW_MS = 60000 // 1分钟窗口计算频率
-  const TARGET_FPS = 5 // 目标检测帧率
+  const EAR_THRESHOLD = 0.4       // 闭眼阈值
+  const BLINK_COOLDOWN_MS = 300     // 防抖冷却时间（两次眨眼最小间隔）
+  const TARGET_FPS = 10             // 提高帧率到10FPS
   const FRAME_INTERVAL = 1000 / TARGET_FPS
   
   const processResults = useCallback((results: Results) => {
@@ -102,48 +104,55 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
     state.lastProcessTime = now
     
     if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
-      setBlinkData(prev => ({ ...prev, eyeOpenness: 0 }))
+      setBlinkData(prev => ({ 
+        ...prev, 
+        eyeOpenness: 0,
+        rawEar: 0,
+      }))
       return
     }
     
     const landmarks = results.multiFaceLandmarks[0]
     
-    // 计算双眼 EAR
+    // 计算双眼原始 EAR
     const leftEAR = calculateEAR(landmarks, LEFT_EYE_INDICES)
     const rightEAR = calculateEAR(landmarks, RIGHT_EYE_INDICES)
-    const avgEAR = (leftEAR + rightEAR) / 2
+    const rawEAR = (leftEAR + rightEAR) / 2
     
-    // 更新历史
-    state.earHistory.push(avgEAR)
-    if (state.earHistory.length > 10) state.earHistory.shift()
+    // 轻度平滑：只取最近3帧平均（眨眼~150ms，3帧@10fps=300ms足够捕捉）
+    state.earHistory.push(rawEAR)
+    if (state.earHistory.length > 3) state.earHistory.shift()
     
-    // 平滑处理
     const smoothedEAR = state.earHistory.reduce((a, b) => a + b, 0) / state.earHistory.length
     
-    // 眼睛张开程度 (0-1)
-    const openness = Math.min(1, Math.max(0, (smoothedEAR - 0.1) / 0.3))
+    // 眼睛张开程度 (0-1)，直接用原始值映射
+    const openness = Math.min(1, Math.max(0, smoothedEAR))
     
-    // 眨眼检测
+    // 简化检测逻辑：
+    // 1. 当前帧 EAR < 阈值 → 记为闭眼
+    // 2. 从睁眼状态变为闭眼状态 + 冷却时间已过 → 检测到一次眨眼
     const isCurrentlyClosed = smoothedEAR < EAR_THRESHOLD
-    const closedFrameCount = state.earHistory.filter(e => e < EAR_THRESHOLD).length
-    
     let newBlinkCount = blinkData.blinkCount
     let isBlinking = false
     
-    if (isCurrentlyClosed && closedFrameCount >= EAR_CONSEC_FRAMES && !state.isEyeClosed) {
-      // 开始闭眼
+    // 简单的边缘检测：从睁→闭的变化 = 一次眨眼
+    if (isCurrentlyClosed && !state.isEyeClosed) {
+      // 检查冷却时间，防止重复计数
+      if (!state.lastBlinkTime || (now - state.lastBlinkTime > BLINK_COOLDOWN_MS)) {
+        newBlinkCount++
+        isBlinking = true
+        state.lastBlinkTime = now
+        state.blinkTimestamps.push(now)
+        options.onBlink?.()
+      }
       state.isEyeClosed = true
     } else if (!isCurrentlyClosed && state.isEyeClosed) {
-      // 睁眼 = 完成一次眨眼
+      // 省略恢复睁眼的处理
       state.isEyeClosed = false
-      newBlinkCount++
-      isBlinking = true
-      state.blinkTimestamps.push(now)
-      options.onBlink?.()
     }
     
-    // 清理过期眨眼记录（1分钟前）
-    state.blinkTimestamps = state.blinkTimestamps.filter(t => now - t < BLINK_WINDOW_MS)
+    // 清理过期眨眼记录（1分钟窗口）
+    state.blinkTimestamps = state.blinkTimestamps.filter(t => now - t < 60000)
     const blinkRate = state.blinkTimestamps.length
     
     // 频率变化回调
@@ -157,6 +166,7 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
       blinkRate,
       lastBlinkTime: isBlinking ? now : blinkData.lastBlinkTime,
       eyeOpenness: openness,
+      rawEar: rawEAR,
     })
   }, [blinkData.blinkCount, blinkData.blinkRate, blinkData.lastBlinkTime, options])
   

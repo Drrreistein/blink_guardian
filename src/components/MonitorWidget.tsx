@@ -298,7 +298,7 @@ export function MonitorWidget({ onOpenSettings, onOpenAnalytics }: MonitorWidget
           {blinkData.isBlinking ? 'BLINK DETECTED' : 'EYES OPEN'}
         </div>
         <div className={styles.earValue}>
-          EAR: {blinkData.eyeOpenness.toFixed(2)}
+          EAR: {(blinkData.rawEar || blinkData.eyeOpenness).toFixed(2)} [阈值=0.4]
         </div>
       </div>
       
