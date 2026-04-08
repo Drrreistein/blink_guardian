@@ -289,6 +289,19 @@ export function MonitorWidget({ onOpenSettings, onOpenAnalytics }: MonitorWidget
         </div>
       </div>
       
+      {/* Real-time Blink Detection Indicator */}
+      <div className={styles.blinkIndicator}>
+        <div className={`${styles.eyeIcon} ${blinkData.isBlinking ? styles.eyeClosed : styles.eyeOpen}`}>
+          {blinkData.isBlinking ? '◉' : '○'}
+        </div>
+        <div className={styles.blinkStatus}>
+          {blinkData.isBlinking ? 'BLINK DETECTED' : 'EYES OPEN'}
+        </div>
+        <div className={styles.earValue}>
+          EAR: {blinkData.eyeOpenness.toFixed(2)}
+        </div>
+      </div>
+      
       <video 
         ref={videoRef}
         className={`${styles.videoPreview} ${showVideo ? '' : styles.videoHidden}`}

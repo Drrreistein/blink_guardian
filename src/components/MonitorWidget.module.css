@@ -226,6 +226,56 @@
   display: none;
 }
 
+/* Real-time Blink Detection Indicator */
+.blinkIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.eyeIcon {
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  transition: all 0.1s ease;
+}
+
+.eyeOpen {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.eyeClosed {
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+  background: rgba(255, 214, 0, 0.1);
+}
+
+.blinkStatus {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 100px;
+}
+
+.earValue {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-disabled);
+  margin-left: auto;
+}
+
 /* State Colors */
 .normal { color: var(--accent-green); }
 .warning { color: var(--accent-amber); }
