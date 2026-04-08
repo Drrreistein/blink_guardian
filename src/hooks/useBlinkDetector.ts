@@ -163,10 +163,27 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
   // 初始化 FaceMesh
   useEffect(() => {
     if (!videoRef.current || faceMeshRef.current) return
-    if (!window.FaceMesh || !window.Camera) {
-      setError('MediaPipe 库加载失败，请刷新页面重试')
-      return
+    
+    // 等待 MediaPipe 库加载
+    const waitForMediaPipe = async () => {
+      let attempts = 0
+      const maxAttempts = 50 // 最多等待 5 秒
+      
+      while ((!window.FaceMesh || !window.Camera) && attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 100))
+        attempts++
+      }
+      
+      if (!window.FaceMesh || !window.Camera) {
+        setError('MediaPipe 库加载超时，请检查网络连接后刷新页面')
+        return false
+      }
+      return true
     }
+    
+    const init = async () => {
+      const loaded = await waitForMediaPipe()
+      if (!loaded) return
     
     const faceMesh = new window.FaceMesh({
       locateFile: (file) => {
@@ -185,9 +202,12 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
     faceMeshRef.current = faceMesh
     
     // 初始化相机
-    const camera = new window.Camera(videoRef.current, {
+    const video = videoRef.current
+    if (!video) return
+    
+    const camera = new window.Camera(video, {
       onFrame: async () => {
-        await faceMesh.send({ image: videoRef.current! })
+        await faceMesh.send({ image: video })
       },
       width: 320,
       height: 240,
@@ -202,7 +222,14 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
         setError(null)
       })
       .catch((err) => {
-        setError(err instanceof Error ? err.message : '相机启动失败')
+        const errorMsg = err instanceof Error ? err.message : '相机启动失败'
+        if (errorMsg.includes('Permission denied') || errorMsg.includes('NotAllowedError')) {
+          setError('相机权限被拒绝。请点击浏览器地址栏的相机图标，选择"允许"。')
+        } else if (errorMsg.includes('NotFoundError') || errorMsg.includes('DevicesNotFoundError')) {
+          setError('未找到摄像头设备。请确保摄像头已连接。')
+        } else {
+          setError(`${errorMsg}。请检查摄像头权限后刷新页面。`)
+        }
         setIsInitialized(false)
       })
     
@@ -223,6 +250,9 @@ export function useBlinkDetector(options: UseBlinkDetectorOptions = {}) {
       faceMeshRef.current?.close()
       faceMeshRef.current = null
     }
+    }
+    
+    init()
   }, [processResults])
   
   return {

@@ -128,13 +128,27 @@ export function MonitorWidget({ onOpenSettings, onOpenAnalytics }: MonitorWidget
     )
   }
   
-  // Error state
+  // Error state - still show controls
   if (error) {
     return (
       <div className={`${styles.widget} ${styles.expanded}`}>
         <div className={styles.header}>
           <span className={styles.title}>BLINK GUARDIAN</span>
           <div className={styles.controls}>
+            <button 
+              className={styles.iconBtn} 
+              onClick={onOpenAnalytics}
+              title="Analytics"
+            >
+              ≡
+            </button>
+            <button 
+              className={styles.iconBtn} 
+              onClick={onOpenSettings}
+              title="Settings"
+            >
+              ⚙
+            </button>
             <button className={styles.iconBtn} onClick={() => setIsExpanded(false)}>
               −
             </button>
@@ -144,17 +158,34 @@ export function MonitorWidget({ onOpenSettings, onOpenAnalytics }: MonitorWidget
           <span className={styles.dot} />
           CAMERA ERROR
         </div>
+        <div className={styles.errorText}>
+          {error}. Please check camera permissions and reload.
+        </div>
       </div>
     )
   }
   
-  // Initializing state
+  // Initializing state - still show controls
   if (!isInitialized) {
     return (
       <div className={`${styles.widget} ${styles.expanded}`}>
         <div className={styles.header}>
           <span className={styles.title}>BLINK GUARDIAN</span>
           <div className={styles.controls}>
+            <button 
+              className={styles.iconBtn} 
+              onClick={onOpenAnalytics}
+              title="Analytics"
+            >
+              ≡
+            </button>
+            <button 
+              className={styles.iconBtn} 
+              onClick={onOpenSettings}
+              title="Settings"
+            >
+              ⚙
+            </button>
             <button className={styles.iconBtn} onClick={() => setIsExpanded(false)}>
               −
             </button>
@@ -163,6 +194,9 @@ export function MonitorWidget({ onOpenSettings, onOpenAnalytics }: MonitorWidget
         <div className={styles.statusIndicator}>
           <span className={styles.dot} />
           INITIALIZING...
+        </div>
+        <div className={styles.helpText}>
+          Please allow camera access to enable blink detection
         </div>
       </div>
     )
