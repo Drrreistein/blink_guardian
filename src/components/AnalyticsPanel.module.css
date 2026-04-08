@@ -1,0 +1,339 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 480px;
+  height: 100%;
+  background: #0f172a;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 2001;
+}
+
+.panel.open {
+  transform: translateX(0);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.statCard {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #0ea5e9;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.chartCard {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.chartTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.periodTabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.periodTab {
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.periodTab:hover {
+  color: #94a3b8;
+}
+
+.periodTab.active {
+  background: #0ea5e9;
+  color: #fff;
+}
+
+.chart {
+  height: 160px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.bar {
+  flex: 1;
+  background: linear-gradient(to top, #0ea5e9, #38bdf8);
+  border-radius: 4px 4px 0 0;
+  min-height: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.bar:hover {
+  background: linear-gradient(to top, #38bdf8, #7dd3fc);
+}
+
+.barTooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+  margin-bottom: 4px;
+}
+
+.bar:hover .barTooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.emptyChart {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.sessionList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sessionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.sessionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sessionDate {
+  font-size: 13px;
+  font-weight: 500;
+  color: #f8fafc;
+}
+
+.sessionDuration {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.sessionStats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sessionBlinkRate {
+  font-size: 14px;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.sessionBlinks {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.riskCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.riskScore {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.riskScore.low {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.riskScore.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.riskScore.high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.riskInfo {
+  flex: 1;
+}
+
+.riskTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f8fafc;
+  margin-bottom: 4px;
+}
+
+.riskDesc {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 48px 24px;
+  color: #64748b;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.emptyText {
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .panel {
+    width: 100%;
+  }
+}
