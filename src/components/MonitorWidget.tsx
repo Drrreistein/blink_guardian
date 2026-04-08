@@ -161,11 +161,18 @@ export function MonitorWidget({ onOpenSettings, onOpenAnalytics }: MonitorWidget
         <div className={styles.errorText}>
           {error}. Please check camera permissions and reload.
         </div>
+        {/* Hidden video element */}
+        <video 
+          ref={videoRef}
+          className={styles.videoHidden}
+          playsInline
+          muted
+        />
       </div>
     )
   }
   
-  // Initializing state - still show controls
+  // Initializing state - still show controls and hidden video for camera init
   if (!isInitialized) {
     return (
       <div className={`${styles.widget} ${styles.expanded}`}>
@@ -198,6 +205,13 @@ export function MonitorWidget({ onOpenSettings, onOpenAnalytics }: MonitorWidget
         <div className={styles.helpText}>
           Please allow camera access to enable blink detection
         </div>
+        {/* Hidden video element for camera initialization */}
+        <video 
+          ref={videoRef}
+          className={styles.videoHidden}
+          playsInline
+          muted
+        />
       </div>
     )
   }
