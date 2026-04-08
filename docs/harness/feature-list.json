@@ -8,7 +8,7 @@
       "title": "UI 重设计 - Nothing Design 风格",
       "description": "使用 Nothing Design System 重新设计整个应用界面，采用单色、工业风格、瑞士字体排版",
       "priority": "P0",
-      "status": "evaluated",
+      "status": "done",
       "passes": true,
       "shortcut": false,
       "shortcut_reason": null,
