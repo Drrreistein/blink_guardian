@@ -2,14 +2,14 @@
 
 .timer {
   position: fixed;
-  bottom: 200px;
-  right: 24px;
+  bottom: 24px;
+  left: 24px;
   background: var(--bg-surface, #111111);
   border: 1px solid var(--border, #333333);
   padding: 16px;
   color: var(--text-primary, #e5e5e5);
   font-family: var(--font-primary, 'Space Grotesk', sans-serif);
-  z-index: 999;
+  z-index: 1000;
   width: 200px;
   transition: all 200ms ease-out;
 }

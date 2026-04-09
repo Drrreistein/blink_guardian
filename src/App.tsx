@@ -125,7 +125,7 @@ function App() {
         style={{
           position: 'fixed',
           bottom: '8px',
-          left: '12px',
+          right: '12px',
           background: '#222',
           color: showDebug ? '#0f0' : '#666',
           border: '1px solid #444',
