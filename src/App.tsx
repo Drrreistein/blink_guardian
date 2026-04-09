@@ -4,7 +4,6 @@ import { SettingsPanel } from './components/SettingsPanel'
 import { AlertOverlay } from './components/AlertOverlay'
 import { AnalyticsPanel } from './components/AnalyticsPanel'
 import { Timer202020 } from './components/Timer202020'
-import { CameraDebug } from './components/CameraDebug'
 import { useAlert } from './hooks/useAlert'
 import { useSessionStorage } from './hooks/useSessionStorage'
 import './App.css'
@@ -13,9 +12,6 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false)
   const [timerEnabled, setTimerEnabled] = useState(true)
-  const [showDebug, setShowDebug] = useState(() => {
-    return new URLSearchParams(window.location.search).has('debug')
-  })
   
   const { 
     config, 
@@ -115,29 +111,6 @@ function App() {
         visualEnabled={config.visualEnabled}
         onDismiss={stopAlert}
       />
-      
-      {/* Debug Tool */}
-      {showDebug && <CameraDebug />}
-      
-      {/* Debug Toggle Button (always visible) */}
-      <button
-        onClick={() => setShowDebug(!showDebug)}
-        style={{
-          position: 'fixed',
-          bottom: '8px',
-          right: '12px',
-          background: '#222',
-          color: showDebug ? '#0f0' : '#666',
-          border: '1px solid #444',
-          padding: '4px 10px',
-          fontFamily: 'monospace',
-          fontSize: '10px',
-          cursor: 'pointer',
-          zIndex: 10001,
-        }}
-      >
-        {showDebug ? 'DEBUG ON' : 'DEBUG'}
-      </button>
     </div>
   )
 }
